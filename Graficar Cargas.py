@@ -12,13 +12,9 @@ X, Y = np.meshgrid(x, y)
 cargas = [ ]
 Num_Q = 50
 
+linea_de_cargas(cargas, Num_Q, np.array([-5,-5]), np.array([0,0]), 1)
+circulo_de_cargas(cargas, Num_Q, np.array([ 3, 2]), 2, frac=0.75 ,desfase= np.pi/2 , valor_Q= 1)
 
-
-circulo_de_cargas(cargas, Num_Q, [0, 1], 1, 0.5)
-
-linea_de_cargas(cargas, Num_Q, [-5,-5], [0,0], 10)
-
-circulo_de_cargas(cargas, Num_Q, [5, -3], 3, 0.5,np.pi,-3)
 
 # Inicializar el campo total
 Ex_total = np.zeros_like(X)
@@ -26,7 +22,7 @@ Ey_total = np.zeros_like(Y)
 
 # Sumar los campos de cada carga
 for carga in cargas:
-    Ex, Ey = carga.campo(X, Y)
+    Ex, Ey = carga.campo_gravitatorio(X, Y)
     Ex_total += Ex
     Ey_total += Ey
 
@@ -38,9 +34,9 @@ ax.streamplot(X, Y, Ex_total, Ey_total, color=color, cmap='inferno', density=1.5
 # Dibujar las cargas
 for carga in cargas:
     if carga.q > 0:
-        ax.plot(carga.x, carga.y, 'ro')  # roja para positiva
+        ax.plot(carga.pos[0], carga.pos[1], 'go') 
     else:
-        ax.plot(carga.x, carga.y, 'bo')  # azul para negativa
+        ax.plot(carga.pos[0], carga.pos[1], 'ro')  
 
 ax.set_title('Líneas de campo eléctrico')
 ax.set_xlabel('x')
